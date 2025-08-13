@@ -1,20 +1,14 @@
-# ---------- core frameworks ----------
 Flask==3.0.2
 Flask-SQLAlchemy==3.1.1
 Flask-Login==0.6.3
 Werkzeug==3.0.2
-itsdangerous==2.1.2          # Flask dependency, security-patched
+itsdangerous==2.1.2
 
-# ---------- database ----------
-SQLAlchemy==2.0.34           # avoids Py3.13 regression
-psycopg2-binary==2.9.8       # wheel supports Python 3.13 & 3.12
+SQLAlchemy==2.0.34          # fixed __firstlineno__ bug
+psycopg2-binary==2.9.8      # last wheel built for Py 3.12
 
-# ---------- production server ----------
 gunicorn==22.0.0
 
-# ---------- Google Gemini ----------
 google-genai==0.5.0
-protobuf==4.25.3              # required by google-genai
-
-# ---------- misc / compatibility ----------
-typing_extensions==4.12.2     # some deps still import this
+protobuf==4.25.3
+typing_extensions==4.12.2

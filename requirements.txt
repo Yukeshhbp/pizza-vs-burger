@@ -4,8 +4,8 @@ Flask-Login==0.6.3
 Werkzeug==3.0.2
 itsdangerous==2.1.2
 
-SQLAlchemy==2.0.34          # fixed __firstlineno__ bug
-psycopg2-binary==2.9.8      # last wheel built for Py 3.12
+SQLAlchemy==2.0.34
+psycopg2-binary==2.9.8     # wheel built for Python 3.12
 
 gunicorn==22.0.0
 

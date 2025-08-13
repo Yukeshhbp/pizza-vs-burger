@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Food Vote Battle{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-lg">
+            <div class="card-header text-center bg-primary">
+                <h2 class="card-title mb-0">
+                    <i class="fas fa-utensils me-2"></i>
+                    Login to Vote!
+                </h2>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-user"></i>
+                            </span>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 mb-3">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login & Start Voting
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header text-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-info-circle me-2"></i>Demo Users
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-12 mb-2">
+                        <strong>foodie_mike</strong> / pizza123
+                    </div>
+                    <div class="col-12 mb-2">
+                        <strong>hungry_sarah</strong> / burger456
+                    </div>
+                    <div class="col-12">
+                        <strong>taste_tester</strong> / food789
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-12 text-center">
+        <div class="food-battle-intro">
+            <h3 class="mb-3">
+                <i class="fas fa-pizza-slice text-warning me-2"></i>
+                The Ultimate Food Battle
+                <i class="fas fa-hamburger text-warning ms-2"></i>
+            </h3>
+            <p class="lead text-muted">
+                Join the epic battle between Pizza and Burger! Cast your vote and get hilarious responses from our AI food critic agent.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

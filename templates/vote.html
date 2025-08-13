@@ -1,0 +1,396 @@
+{% extends "base.html" %}
+
+{% block title %}Vote Now - Food Vote Battle{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12 text-center mb-4">
+        <h1 class="display-4">
+            <i class="fas fa-pizza-slice text-warning me-2"></i>
+            Food Vote Battle
+            <i class="fas fa-hamburger text-warning ms-2"></i>
+        </h1>
+        <p class="lead">Cast your vote and get a hilarious response from our AI food critic!</p>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-lg-6 mb-4">
+        <div class="card h-100 border-warning">
+            <div class="card-header bg-warning text-dark text-center">
+                <h3 class="mb-0">
+                    <i class="fas fa-pizza-slice me-2"></i>
+                    Pizza Power
+                </h3>
+            </div>
+            <div class="card-body text-center">
+                <h2 class="display-3 text-warning" id="pizza-count">{{ pizza_count }}</h2>
+                <p class="lead">Total Votes</p>
+                <div class="progress mb-3">
+                    <div class="progress-bar bg-warning" role="progressbar" 
+                         style="width: {{ (pizza_count / (pizza_count + burger_count) * 100) if (pizza_count + burger_count) > 0 else 50 }}%">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 mb-4">
+        <div class="card h-100 border-danger">
+            <div class="card-header bg-danger text-white text-center">
+                <h3 class="mb-0">
+                    <i class="fas fa-hamburger me-2"></i>
+                    Burger Brigade
+                </h3>
+            </div>
+            <div class="card-body text-center">
+                <h2 class="display-3 text-danger" id="burger-count">{{ burger_count }}</h2>
+                <p class="lead">Total Votes</p>
+                <div class="progress mb-3">
+                    <div class="progress-bar bg-danger" role="progressbar" 
+                         style="width: {{ (burger_count / (pizza_count + burger_count) * 100) if (pizza_count + burger_count) > 0 else 50 }}%">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center mb-5">
+    <div class="col-lg-8">
+        <div class="card shadow-lg">
+            <div class="card-header text-center bg-primary">
+                <h3 class="mb-0">
+                    <i class="fas fa-vote-yea me-2"></i>
+                    Cast Your Vote
+                </h3>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST" id="voteForm">
+                    <div class="mb-4">
+                        <label for="vote_id" class="form-label">Vote ID (for tracking)</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-id-badge"></i>
+                            </span>
+                            <input type="text" class="form-control" id="vote_id" name="vote_id" 
+                                   placeholder="Enter your unique vote ID" required>
+                        </div>
+                        <div class="form-text">Enter any ID to track your vote (e.g., your initials, favorite number, etc.)</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label">Choose Your Food:</label>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check food-option">
+                                    <input class="form-check-input" type="radio" name="food_type" id="pizza" value="pizza" required>
+                                    <label class="form-check-label food-label" for="pizza">
+                                        <div class="food-card pizza-card">
+                                            <i class="fas fa-pizza-slice fa-3x mb-2"></i>
+                                            <h5>Pizza</h5>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check food-option">
+                                    <input class="form-check-input" type="radio" name="food_type" id="burger" value="burger" required>
+                                    <label class="form-check-label food-label" for="burger">
+                                        <div class="food-card burger-card">
+                                            <i class="fas fa-hamburger fa-3x mb-2"></i>
+                                            <h5>Burger</h5>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mb-4">
+                        <button type="submit" class="btn btn-primary btn-lg submit-vote-btn" id="submitBtn">
+                            <i class="fas fa-vote-yea me-2"></i>
+                            <span id="submitText">Cast My Vote</span>
+                            <div id="submitSpinner" class="spinner-border spinner-border-sm ms-2" style="display: none;" role="status"></div>
+                        </button>
+                    </div>
+                    
+                    <!-- AI Response Display Area -->
+                    <div id="aiResponse" class="ai-response-container" style="display: none;">
+                        <div class="alert alert-success ai-response-box">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-robot me-2 mt-1 text-info"></i>
+                                <div>
+                                    <strong>AI Food Critic Says:</strong>
+                                    <p id="aiResponseText" class="mb-0 mt-1"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if recent_votes %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">
+                    <i class="fas fa-clock me-2"></i>
+                    Recent Votes & AI Responses
+                </h4>
+            </div>
+            <div class="card-body">
+                <div id="votesList">
+                    {% for vote in recent_votes %}
+                    <div class="vote-item border-bottom pb-3 mb-3" data-vote-id="{{ vote.id }}">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <strong class="text-{{ 'warning' if vote.food_type == 'pizza' else 'danger' }}">
+                                    <i class="fas fa-{{ 'pizza-slice' if vote.food_type == 'pizza' else 'hamburger' }} me-1"></i>
+                                    {{ vote.voter.username }}
+                                </strong>
+                                voted for <strong>{{ vote.food_type.title() }}</strong>
+                                <small class="text-muted">(ID: {{ vote.vote_id }})</small>
+                            </div>
+                            <small class="text-muted">{{ vote.timestamp.strftime('%m/%d %H:%M') }}</small>
+                        </div>
+                        {% if vote.gemini_response %}
+                        <div class="mt-2 p-3 bg-info bg-opacity-10 border border-info border-opacity-25 rounded">
+                            <i class="fas fa-robot me-1 text-info"></i>
+                            <em class="text-dark">{{ vote.gemini_response }}</em>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                {% if recent_votes|length >= 3 %}
+                <div class="text-center mt-3">
+                    <button type="button" class="btn btn-outline-primary" id="loadMoreBtn">
+                        <i class="fas fa-chevron-down me-2"></i>Load More Responses
+                    </button>
+                    <div id="loadingSpinner" class="spinner-border text-primary mt-3" style="display: none;" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Auto-refresh vote counts every 30 seconds
+setInterval(function() {
+    fetch('/api/vote-counts')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('pizza-count').textContent = data.pizza;
+            document.getElementById('burger-count').textContent = data.burger;
+            
+            // Update progress bars
+            const total = data.pizza + data.burger;
+            if (total > 0) {
+                const pizzaPercent = (data.pizza / total) * 100;
+                const burgerPercent = (data.burger / total) * 100;
+                
+                document.querySelector('.progress-bar.bg-warning').style.width = pizzaPercent + '%';
+                document.querySelector('.progress-bar.bg-danger').style.width = burgerPercent + '%';
+            }
+        })
+        .catch(error => console.log('Error updating counts:', error));
+}, 30000);
+
+// Handle food selection visual feedback
+document.querySelectorAll('input[name="food_type"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        // Remove active class from all cards
+        document.querySelectorAll('.food-card').forEach(card => {
+            card.classList.remove('active');
+        });
+        
+        // Add active class to selected card
+        if (this.checked) {
+            this.nextElementSibling.querySelector('.food-card').classList.add('active');
+        }
+    });
+});
+
+// Handle form submission with AJAX
+document.getElementById('voteForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const voteId = document.getElementById('vote_id').value.trim();
+    const selectedFood = document.querySelector('input[name="food_type"]:checked');
+    
+    if (!voteId) {
+        alert('Please enter a vote ID before casting your vote!');
+        document.getElementById('vote_id').focus();
+        return;
+    }
+    
+    if (!selectedFood) {
+        alert('Please select a food option before casting your vote!');
+        return;
+    }
+    
+    // Show loading state
+    const submitBtn = document.getElementById('submitBtn');
+    const submitText = document.getElementById('submitText');
+    const submitSpinner = document.getElementById('submitSpinner');
+    const aiResponse = document.getElementById('aiResponse');
+    
+    submitBtn.disabled = true;
+    submitText.textContent = 'Casting Vote...';
+    submitSpinner.style.display = 'inline-block';
+    aiResponse.style.display = 'none';
+    
+    // Create form data
+    const formData = new FormData();
+    formData.append('vote_id', voteId);
+    formData.append('food_type', selectedFood.value);
+    
+    // Submit vote via AJAX
+    fetch('/api/vote', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Display AI response
+            document.getElementById('aiResponseText').textContent = data.message;
+            aiResponse.style.display = 'block';
+            
+            // Smooth scroll to response
+            aiResponse.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            
+            // Update vote counts
+            document.getElementById('pizza-count').textContent = data.pizza_count;
+            document.getElementById('burger-count').textContent = data.burger_count;
+            
+            const total = data.pizza_count + data.burger_count;
+            if (total > 0) {
+                const pizzaPercent = (data.pizza_count / total) * 100;
+                const burgerPercent = (data.burger_count / total) * 100;
+                
+                document.querySelector('.progress-bar.bg-warning').style.width = pizzaPercent + '%';
+                document.querySelector('.progress-bar.bg-danger').style.width = burgerPercent + '%';
+            }
+            
+            // Reset form
+            document.getElementById('voteForm').reset();
+            document.querySelectorAll('.food-card').forEach(card => {
+                card.classList.remove('active');
+            });
+        } else {
+            // Display error message
+            document.getElementById('aiResponseText').textContent = data.error || 'Sorry, there was an error processing your vote. Please try again.';
+            aiResponse.style.display = 'block';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('aiResponseText').textContent = 'Sorry, there was an error processing your vote. Please try again.';
+        aiResponse.style.display = 'block';
+    })
+    .finally(() => {
+        // Reset button state
+        submitBtn.disabled = false;
+        submitText.textContent = 'Cast My Vote';
+        submitSpinner.style.display = 'none';
+    });
+});
+
+// Load more votes functionality
+let currentOffset = {{ recent_votes|length }};
+let isLoading = false;
+
+function loadMoreVotes() {
+    if (isLoading) return;
+    
+    isLoading = true;
+    const loadBtn = document.getElementById('loadMoreBtn');
+    const spinner = document.getElementById('loadingSpinner');
+    
+    loadBtn.style.display = 'none';
+    spinner.style.display = 'inline-block';
+    
+    fetch(`/api/more-votes?offset=${currentOffset}&limit=5`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.votes.length > 0) {
+                const votesList = document.getElementById('votesList');
+                
+                data.votes.forEach(vote => {
+                    const voteHtml = `
+                        <div class="vote-item border-bottom pb-3 mb-3" data-vote-id="${vote.id}">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <strong class="text-${vote.food_type === 'pizza' ? 'warning' : 'danger'}">
+                                        <i class="fas fa-${vote.food_type === 'pizza' ? 'pizza-slice' : 'hamburger'} me-1"></i>
+                                        ${vote.username}
+                                    </strong>
+                                    voted for <strong>${vote.food_type.charAt(0).toUpperCase() + vote.food_type.slice(1)}</strong>
+                                    <small class="text-muted">(ID: ${vote.vote_id})</small>
+                                </div>
+                                <small class="text-muted">${vote.timestamp}</small>
+                            </div>
+                            ${vote.gemini_response ? `
+                                <div class="mt-2 p-3 bg-info bg-opacity-10 border border-info border-opacity-25 rounded">
+                                    <i class="fas fa-robot me-1 text-info"></i>
+                                    <em class="text-dark">${vote.gemini_response}</em>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                    votesList.insertAdjacentHTML('beforeend', voteHtml);
+                });
+                
+                currentOffset += data.votes.length;
+                
+                // Show/hide load more button based on whether there are more votes
+                if (data.has_more) {
+                    loadBtn.style.display = 'inline-block';
+                } else {
+                    loadBtn.style.display = 'none';
+                }
+            } else {
+                loadBtn.style.display = 'none';
+            }
+        })
+        .catch(error => {
+            console.error('Error loading more votes:', error);
+            loadBtn.style.display = 'inline-block';
+        })
+        .finally(() => {
+            spinner.style.display = 'none';
+            isLoading = false;
+        });
+}
+
+// Add visual feedback for food card selection
+document.addEventListener('DOMContentLoaded', function() {
+    // Add click handlers to food cards
+    document.querySelectorAll('.food-label').forEach(label => {
+        label.addEventListener('click', function() {
+            const radio = this.previousElementSibling;
+            radio.checked = true;
+            radio.dispatchEvent(new Event('change'));
+        });
+    });
+    
+    // Add click handler for load more button
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', loadMoreVotes);
+    }
+});
+</script>
+{% endblock %}

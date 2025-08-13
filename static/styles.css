@@ -1,0 +1,394 @@
+/* Custom styles for Food Vote Battle - Light Theme */
+
+:root {
+    --pizza-color: #ffc107;
+    --burger-color: #dc3545;
+    --food-primary: #198754;
+    --light-bg: #f8f9fa;
+    --card-bg: #ffffff;
+    --card-border: #dee2e6;
+}
+
+body {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #212529;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.vote-btn {
+    transition: all 0.3s ease;
+    height: 120px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.vote-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+.vote-btn:active {
+    transform: translateY(0);
+}
+
+.card {
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.card-header {
+    border-radius: 15px 15px 0 0 !important;
+}
+
+.progress {
+    height: 8px;
+    border-radius: 10px;
+}
+
+.progress-bar {
+    border-radius: 10px;
+}
+
+.food-battle-intro {
+    animation: fadeInUp 1s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.display-3 {
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.btn-warning {
+    color: #000 !important;
+    font-weight: bold;
+}
+
+.btn-danger {
+    font-weight: bold;
+}
+
+.alert {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+footer {
+    background: linear-gradient(135deg, #212529 0%, #343a40 100%) !important;
+}
+
+/* Loading animation for vote buttons */
+.vote-btn.loading {
+    position: relative;
+    pointer-events: none;
+}
+
+.vote-btn.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .vote-btn {
+        height: 100px;
+        margin-bottom: 15px;
+    }
+    
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .display-3 {
+        font-size: 2.5rem;
+    }
+}
+
+/* Food icons styling */
+.fas.fa-pizza-slice,
+.fas.fa-hamburger {
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* AI Response styling */
+.bg-secondary {
+    background-color: #495057 !important;
+    border-left: 4px solid var(--bs-info);
+}
+
+/* Login page specific styles */
+.card-title {
+    font-size: 1.5rem;
+}
+
+.input-group-text {
+    background-color: var(--bs-secondary);
+    border-color: var(--bs-secondary);
+}
+
+/* Recent votes section */
+.border-bottom:last-child {
+    border-bottom: none !important;
+}
+
+/* Food selection cards */
+.food-option {
+    position: relative;
+}
+
+.food-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.food-label {
+    cursor: pointer;
+    display: block;
+    width: 100%;
+}
+
+.food-card {
+    background: var(--card-bg);
+    border: 3px solid var(--card-border);
+    border-radius: 15px;
+    padding: 30px 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.food-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.food-card.active,
+.food-card:hover {
+    border-color: var(--bs-primary);
+    background: linear-gradient(135deg, var(--bs-primary) 0%, rgba(13, 110, 253, 0.1) 100%);
+}
+
+.pizza-card.active,
+.pizza-card:hover {
+    border-color: var(--pizza-color);
+    background: linear-gradient(135deg, var(--pizza-color) 0%, rgba(255, 193, 7, 0.1) 100%);
+}
+
+.burger-card.active,
+.burger-card:hover {
+    border-color: var(--burger-color);
+    background: linear-gradient(135deg, var(--burger-color) 0%, rgba(220, 53, 69, 0.1) 100%);
+}
+
+.food-card h5 {
+    margin: 0;
+    font-weight: bold;
+    color: #212529;
+}
+
+.food-card i {
+    color: #495057;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Submit button styles */
+.submit-vote-btn {
+    border-radius: 25px;
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.submit-vote-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.submit-vote-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* AI Response styles */
+.ai-response-container {
+    margin-top: 20px;
+    animation: slideDown 0.5s ease-out;
+}
+
+.ai-response-box {
+    border-radius: 15px;
+    border: 1px solid #d1ecf1;
+    background: linear-gradient(135deg, #d1ecf1 0%, #b8daff 100%);
+    border-left: 4px solid var(--bs-info);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.ai-response-box i.fa-robot {
+    font-size: 1.2rem;
+    color: #0c5460;
+}
+
+.ai-response-box p {
+    font-style: italic;
+    font-size: 1.05rem;
+    line-height: 1.4;
+    color: #0c5460;
+    margin-bottom: 0;
+}
+
+.ai-response-box strong {
+    color: #062c33;
+}
+
+/* Loading spinner animation */
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    .food-card {
+        height: 120px;
+        padding: 20px 15px;
+    }
+    
+    .food-card i {
+        font-size: 2rem !important;
+    }
+    
+    .submit-vote-btn {
+        padding: 12px 30px;
+        font-size: 1rem;
+    }
+    
+    .ai-response-box {
+        padding: 15px;
+    }
+}
+
+/* Form validation styles */
+.form-control:invalid {
+    border-color: var(--bs-danger);
+}
+
+.form-control:valid {
+    border-color: var(--bs-success);
+}
+
+/* Enhanced focus styles */
+.food-option input[type="radio"]:focus + label .food-card {
+    outline: 2px solid var(--bs-info);
+    outline-offset: 2px;
+}
+
+/* Light theme specific adjustments */
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background: var(--bs-primary);
+    color: white;
+    border-bottom: 1px solid var(--card-border);
+}
+
+.text-muted {
+    color: #6c757d !important;
+}
+
+.vote-item {
+    background: transparent;
+}
+
+.vote-item:last-child {
+    border-bottom: none !important;
+}
+
+/* Load more button styling */
+#loadMoreBtn {
+    transition: all 0.3s ease;
+}
+
+#loadMoreBtn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Better contrast for AI response text */
+.ai-response-box .text-dark {
+    color: #212529 !important;
+    font-weight: 500;
+}
+
+/* Improved card styling for light theme */
+.border-warning {
+    border-color: var(--pizza-color) !important;
+}
+
+.border-danger {
+    border-color: var(--burger-color) !important;
+}
+
+.bg-warning {
+    background-color: var(--pizza-color) !important;
+}
+
+.bg-danger {
+    background-color: var(--burger-color) !important;
+}

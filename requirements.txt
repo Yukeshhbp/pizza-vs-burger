@@ -7,7 +7,7 @@ itsdangerous==2.1.2          # Flask dependency, security-patched
 
 # ---------- database ----------
 SQLAlchemy==2.0.34           # avoids Py3.13 regression
-psycopg2-binary==2.9.9       # wheel supports Python 3.13 & 3.12
+psycopg2-binary==2.9.8       # wheel supports Python 3.13 & 3.12
 
 # ---------- production server ----------
 gunicorn==22.0.0

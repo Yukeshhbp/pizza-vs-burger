@@ -1,11 +1,20 @@
+# ---------- core frameworks ----------
 Flask==3.0.2
 Flask-SQLAlchemy==3.1.1
 Flask-Login==0.6.3
 Werkzeug==3.0.2
-gunicorn==22.0.0          # Production WSGI server Render expects
-google-genai==0.5.0       # Gemini client library
-protobuf==4.25.3          # Required by google-genai
-psycopg2-binary==2.9.9    # PostgreSQL driver (wheel supports Py 3.13)
-SQLAlchemy==2.0.34          # Explicit pin to avoid old transitive installs
-itsdangerous==2.1.2       # Flask dependency, pinned for security
-typing_extensions==4.12.2  # Optional (already in stdlib for Py≥3.11 but safe to pin)
+itsdangerous==2.1.2          # Flask dependency, security-patched
+
+# ---------- database ----------
+SQLAlchemy==2.0.34           # avoids Py3.13 regression
+psycopg2-binary==2.9.9       # wheel supports Python 3.13 & 3.12
+
+# ---------- production server ----------
+gunicorn==22.0.0
+
+# ---------- Google Gemini ----------
+google-genai==0.5.0
+protobuf==4.25.3              # required by google-genai
+
+# ---------- misc / compatibility ----------
+typing_extensions==4.12.2     # some deps still import this
